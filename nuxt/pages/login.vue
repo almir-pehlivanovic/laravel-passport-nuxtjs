@@ -26,13 +26,16 @@ export default {
     },
     methods:{
         async loginPassport(){
-            await this.$auth.loginWith('laravelPassport', {data: this.form})
-            .then(() =>{
-                console.log("Something");
-            })
-            .catch((e) => {
-                console.log(e);
-            })
+            try{
+                let response = await this.$auth.loginWith('laravelPassport', {data: this.form});
+                 console.log(response);
+            }
+            catch(e){
+                let errorResponse = e.response.data.message;
+                errorResponse = errorResponse.substring(errorResponse.indexOf("{")); // unnecessary text before json string
+                let json = JSON.parse(errorResponse);
+                console.log(json);
+            }
         }
     }
 }
